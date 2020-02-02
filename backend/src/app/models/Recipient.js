@@ -1,9 +1,10 @@
 import Sequelize, { Model } from 'sequelize';
 
-class Address extends Model {
+class Recipient extends Model {
   static init(sequelize) {
     super.init(
       {
+        name: Sequelize.STRING,
         street_name: Sequelize.STRING,
         number: Sequelize.STRING,
         complement: Sequelize.STRING,
@@ -15,7 +16,9 @@ class Address extends Model {
         sequelize,
       }
     );
+
+    return this;
   }
 }
 
-export default Address;
+export default Recipient;
