@@ -31,10 +31,14 @@ routes.use(checkAdminMiddleware);
 
 routes.post('/deliverymans', DeliveryManController.store);
 routes.put('/deliverymans/:id', DeliveryManController.update);
-routes.get('/deliverymans', DeliveryManController.list);
+routes.get('/deliverymans', DeliveryManController.index);
 routes.get('/deliverymans/:id', DeliveryManController.show);
 routes.delete('/deliverymans/:id', DeliveryManController.delete);
 
 routes.post('/deliveries', DeliveryController.store);
+routes.put('/deliveries/:id', DeliveryController.update);
+routes.get('/deliveries', DeliveryController.index);
+routes.get('/deliveries/:id', DeliveryController.show);
+routes.delete('/deliveries/:id', DeliveryController.delete);
 
 export default routes;

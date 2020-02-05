@@ -77,7 +77,7 @@ class DeliveryManController {
     });
   }
 
-  async list(req, res) {
+  async index(req, res) {
     const deliveryMans = await DeliveryMan.findAll({
       include: [
         {
