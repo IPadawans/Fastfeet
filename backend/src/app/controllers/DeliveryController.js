@@ -5,6 +5,8 @@ import Recipient from '../models/Recipient';
 import DeliveryMan from '../models/DeliveryMan';
 import File from '../models/File';
 
+import Mail from '../../lib/Mail';
+
 class DeliveryController {
   async store(req, res) {
     const schema = Yup.object().shape({
@@ -22,6 +24,50 @@ class DeliveryController {
     }
 
     const delivery = await Delivery.create(req.body);
+    const { product, deliveryman, recipient } = await Delivery.findByPk(
+      delivery.id,
+      {
+        attributes: ['product'],
+        include: [
+          {
+            model: DeliveryMan,
+            as: 'deliveryman',
+            attributes: ['name', 'email'],
+          },
+          {
+            model: Recipient,
+            as: 'recipient',
+            attributes: [
+              'name',
+              'street_name',
+              'number',
+              'complement',
+              'state',
+              'city',
+              'cep',
+            ],
+          },
+        ],
+      }
+    );
+
+    await Mail.sendMail({
+      to: `${deliveryman.name} <${deliveryman.email}>`,
+      subject: 'Nova entrega cadastrada',
+      template: 'newdelivery',
+      context: {
+        deliveryman: deliveryman.name,
+        product_name: product,
+        recipient_name: recipient.name,
+        recipient_street_name: recipient.street_name,
+        recipient_number: recipient.number,
+        recipient_complement: recipient.complement,
+        recipient_state: recipient.state,
+        recipient_city: recipient.city,
+        recipient_cep: recipient.cep,
+      },
+    });
+
     return res.json(delivery);
   }
 
@@ -71,7 +117,11 @@ class DeliveryController {
   }
 
   async index(req, res) {
+    const { page = 1 } = req.query;
+
     const deliveries = await Delivery.findAll({
+      limit: 20,
+      offset: (page - 1) * 20,
       include: [
         {
           model: Recipient,
