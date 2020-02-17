@@ -8,6 +8,7 @@ import FileController from './app/controllers/FileController';
 import RecipientController from './app/controllers/RecipientController';
 import DeliveryManController from './app/controllers/DeliveryManController';
 import DeliveryController from './app/controllers/DeliveryController';
+import DeliveriesFromDeliveryManController from './app/controllers/DeliveriesFromDeliveryManController';
 
 import authMiddleware from './app/middlewares/authMiddleware';
 import checkAdminMiddleware from './app/middlewares/checkAdminMiddleware';
@@ -26,6 +27,11 @@ routes.post('/files', upload.single('file'), FileController.store);
 
 routes.post('/recipients', RecipientController.store);
 routes.put('/recipients/:id', RecipientController.update);
+
+routes.get(
+  '/deliveryman/:id/deliveries',
+  DeliveriesFromDeliveryManController.store
+);
 
 routes.use(checkAdminMiddleware);
 
