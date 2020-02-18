@@ -9,6 +9,8 @@ import RecipientController from './app/controllers/RecipientController';
 import DeliveryManController from './app/controllers/DeliveryManController';
 import DeliveryController from './app/controllers/DeliveryController';
 import DeliveriesFromDeliveryManController from './app/controllers/DeliveriesFromDeliveryManController';
+import CheckinDeliveryController from './app/controllers/CheckinDeliveryController';
+import CheckoutDeliveryController from './app/controllers/CheckoutDeliveryController';
 
 import authMiddleware from './app/middlewares/authMiddleware';
 import checkAdminMiddleware from './app/middlewares/checkAdminMiddleware';
@@ -31,6 +33,17 @@ routes.put('/recipients/:id', RecipientController.update);
 routes.get(
   '/deliveryman/:id/deliveries',
   DeliveriesFromDeliveryManController.store
+);
+
+routes.post(
+  '/deliveryman/:idDeliveryman/delivery/:idDelivery/checkin',
+  CheckinDeliveryController.store
+);
+
+routes.post(
+  '/deliveryman/:idDeliveryman/delivery/:idDelivery/checkout',
+  upload.single('file'),
+  CheckoutDeliveryController.store
 );
 
 routes.use(checkAdminMiddleware);
