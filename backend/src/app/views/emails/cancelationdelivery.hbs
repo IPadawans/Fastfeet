@@ -1,0 +1,19 @@
+<strong>Olá, {{ deliveryman }}</strong>
+<p>Ocorreu um problema com uma das suas entregas e a mesma será cancelada, segue informações da entrega</p>
+
+<p>
+  <strong>Produto: </strong> {{product_name}} <br /> <br />
+  <strong>Informações do destinatário</strong>
+  <br />
+  <strong>Nome: </strong>{{ recipient_name }} <br />
+  <strong>Rua: </strong>{{ recipient_street_name }} <br />
+  <strong>Número: </strong>{{ recipient_number }} <br />
+  <strong>Complemento: </strong> {{ recipient_complement }} <br />
+  <strong>Estado: </strong>{{ recipient_state }} <br />
+  <strong>Cidade: </strong>{{ recipient_city }} <br />
+  <strong>CEP: </strong>{{ recipient_cep }} <br />
+</p>
+
+<strong>Problema relatado</strong>
+<strong>Descricao problema:</strong> {{problem_description}} <br />
+<strong>Entrega cancelada em:</strong> {{cancelation_date}} <br />

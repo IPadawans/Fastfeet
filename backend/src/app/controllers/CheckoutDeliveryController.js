@@ -36,7 +36,7 @@ class DeliveryCheckoutController {
       product,
       start_date,
     } = await existentDelivey.update({
-      start_date: parseISO(end_date),
+      end_date: parseISO(end_date),
     });
 
     return res.json({

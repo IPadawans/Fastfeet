@@ -12,6 +12,7 @@ class UserController {
       password: Yup.string()
         .required()
         .min(6),
+      administrator: Yup.boolean().required(),
     });
 
     if (!(await schema.isValid(req.body))) {

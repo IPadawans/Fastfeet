@@ -11,6 +11,7 @@ import DeliveryController from './app/controllers/DeliveryController';
 import DeliveriesFromDeliveryManController from './app/controllers/DeliveriesFromDeliveryManController';
 import CheckinDeliveryController from './app/controllers/CheckinDeliveryController';
 import CheckoutDeliveryController from './app/controllers/CheckoutDeliveryController';
+import DeliveryProblemController from './app/controllers/DeliveryProblemController';
 
 import authMiddleware from './app/middlewares/authMiddleware';
 import checkAdminMiddleware from './app/middlewares/checkAdminMiddleware';
@@ -44,6 +45,14 @@ routes.post(
   '/deliveryman/:idDeliveryman/delivery/:idDelivery/checkout',
   upload.single('file'),
   CheckoutDeliveryController.store
+);
+
+routes.get('/problems', DeliveryProblemController.index);
+routes.post('/delivery/:idDelivery/problems', DeliveryProblemController.store);
+routes.get('/delivery/:idDelivery/problems', DeliveryProblemController.show);
+routes.delete(
+  '/problem/:idProblem/cancel-delivery',
+  DeliveryProblemController.delete
 );
 
 routes.use(checkAdminMiddleware);

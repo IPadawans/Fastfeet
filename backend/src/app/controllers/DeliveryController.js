@@ -20,6 +20,29 @@ class DeliveryController {
       end_date: Yup.date(),
     });
 
+    const { recipient_id, deliveryman_id, signature_id } = req.body;
+
+    const existentRecipient = await Recipient.findByPk(recipient_id);
+    if (!existentRecipient) {
+      return res
+        .status(400)
+        .json({ error: `Recipient of id ${recipient_id} do not exists` });
+    }
+
+    const existentDeliveryMan = await DeliveryMan.findByPk(deliveryman_id);
+    if (!existentDeliveryMan) {
+      return res
+        .status(400)
+        .json({ error: `Deliveryman of id ${deliveryman_id} do not exists` });
+    }
+
+    const existentSignature = await File.findByPk(signature_id);
+    if (!existentSignature) {
+      return res
+        .status(400)
+        .json({ error: `Signature of id ${signature_id} do not exists` });
+    }
+
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
@@ -76,8 +99,40 @@ class DeliveryController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const { id } = req.params;
+    const {
+      recipient_id: recipient,
+      deliveryman_id: deliveryman,
+      signature_id: signature,
+    } = req.body;
 
+    if (recipient) {
+      const existentRecipient = await Recipient.findByPk(recipient);
+      if (!existentRecipient) {
+        return res
+          .status(400)
+          .json({ error: `Recipient of id ${recipient} do not exists` });
+      }
+    }
+
+    if (deliveryman) {
+      const existentDeliveryMan = await DeliveryMan.findByPk(deliveryman);
+      if (!existentDeliveryMan) {
+        return res
+          .status(400)
+          .json({ error: `Deliveryman of id ${deliveryman} do not exists` });
+      }
+    }
+
+    if (signature) {
+      const existentSignature = await File.findByPk(signature);
+      if (!existentSignature) {
+        return res
+          .status(400)
+          .json({ error: `Signature of id ${signature} do not exists` });
+      }
+    }
+
+    const { id } = req.params;
     const existentDelivery = await Delivery.findByPk(id);
     if (!existentDelivery) {
       return res

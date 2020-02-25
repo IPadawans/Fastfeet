@@ -16,10 +16,20 @@ class DeliveryManController {
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
-    const { email: req_email } = req.body;
+
+    const { email: req_email, avatar_id } = req.body;
     const existentDeliveryMan = await DeliveryMan.findOne({
       where: { email: req_email },
     });
+
+    if (avatar_id) {
+      const existent_avatar = await File.findByPk(avatar_id);
+      if (!existent_avatar) {
+        return res
+          .status(400)
+          .json({ error: `Avatar of id ${avatar_id} do not exists` });
+      }
+    }
 
     if (existentDeliveryMan) {
       return res.status(400).json({ error: 'Delivery man already exists' });
