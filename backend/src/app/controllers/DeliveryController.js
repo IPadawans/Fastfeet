@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
 
 import Delivery from '../models/Delivery';
 import Recipient from '../models/Recipient';
@@ -162,11 +163,22 @@ class DeliveryController {
   }
 
   async index(req, res) {
-    const { page = 1 } = req.query;
+    const { page = 1, q } = req.query;
+
+    let where = {};
+
+    if (q) {
+      where = {
+        product: {
+          [Op.iLike]: `%${q}%`,
+        },
+      };
+    }
 
     const deliveries = await Delivery.findAll({
       limit: 20,
       offset: (page - 1) * 20,
+      where,
       include: [
         {
           model: Recipient,

@@ -29,6 +29,7 @@ routes.put('/users', UserController.update);
 routes.post('/files', upload.single('file'), FileController.store);
 
 routes.post('/recipients', RecipientController.store);
+routes.get('/recipients', RecipientController.index);
 routes.put('/recipients/:id', RecipientController.update);
 
 routes.get(

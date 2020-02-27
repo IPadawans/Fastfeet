@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
 import Recipient from '../models/Recipient';
 
 class RecipientController {
@@ -84,6 +85,41 @@ class RecipientController {
       city: rec_city,
       cep: rec_cep,
     });
+  }
+
+  async index(req, res) {
+    const { page = 1, q } = req.query;
+
+    let where = {};
+
+    if (q) {
+      where = {
+        name: {
+          [Op.iLike]: `%${q}%`,
+        },
+      };
+    }
+
+    const recipients = await Recipient.findAll({
+      limit: 20,
+      offset: (page - 1) * 20,
+      where,
+    });
+
+    const formattedRecipients = recipients.map(recipient => {
+      return {
+        id: recipient.id,
+        name: recipient.name,
+        street_name: recipient.street_name,
+        number: recipient.number,
+        complement: recipient.complement,
+        state: recipient.state,
+        city: recipient.city,
+        cep: recipient.cep,
+      };
+    });
+
+    return res.json(formattedRecipients);
   }
 }
 
