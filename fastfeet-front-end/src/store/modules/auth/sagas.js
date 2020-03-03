@@ -1,4 +1,5 @@
 import { all, takeLatest, call, put } from 'redux-saga/effects';
+import { toast } from 'react-toastify';
 
 import api from '~/services/api';
 import history from '~/services/history';
@@ -17,16 +18,34 @@ export function* signIn({ payload }) {
     const { token, user } = response.data;
 
     if (!user.administrator) {
-      console.tron.error('Usuario nao e administrador');
+      toast.error('Usuário não é administrador');
       return;
     }
 
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+
     yield put(signInSuccess(token, user));
 
-    history.push('/dashboard');
+    history.push('/deliveries');
   } catch (err) {
+    toast.error('Falha na autenticação, verifique seus dados');
     yield put(signFailure());
   }
 }
 
-export default all([takeLatest('@auth/SIGN_IN_REQUEST', signIn)]);
+export function setToken({ payload }) {
+  if (!payload) {
+    return;
+  }
+
+  const { token } = payload.auth;
+
+  if (token) {
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+  }
+}
+
+export default all([
+  takeLatest('persist/REHYDRATE', setToken),
+  takeLatest('@auth/SIGN_IN_REQUEST', signIn),
+]);
