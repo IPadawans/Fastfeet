@@ -27,10 +27,7 @@ export default function Header() {
               <Link to="/profile">Sair do sistema</Link>
             </div>
             <img
-              src={
-                profile.avatar.url ||
-                'https://api.adorable.io/avatars/50/abott@adorable.png'
-              }
+              src="https://api.adorable.io/avatars/50/abott@adorable.png"
               alt="Profile Pic"
             />
           </Profile>
